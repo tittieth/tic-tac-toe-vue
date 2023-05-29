@@ -11,33 +11,32 @@ const game = ref({
     },
     playerO: {
       name: '',
-      active: false,
+      active: true,
     },
     startGame: false,
   });
 
-const savePlayerX = () => {
-    console.log(game.value.playerX.name);
-    localStorage.setItem("userX", game.value.playerX.name);
-    game.value.playerX.active = false; 
-    game.value.playerO.active = true;
-    console.log(game.value.playerO.active);
-};
+// const savePlayerX = () => {
+//     console.log(game.value.playerX.name);
+//     localStorage.setItem("userX", game.value.playerX.name);
+//     game.value.playerX.active = false; 
+//     game.value.playerO.active = true;
+//     console.log(game.value.playerO.active);
+// };
 
 const props = defineProps({
   startGame: Boolean
 });
-
-console.log(props.startGame);
 
 const emit = defineEmits(['start-game', 'update:gameNames']);
 
 
 const savePlayerYAndRenderGameBoard = () => {
   localStorage.setItem("userO", game.value.playerO.name);
+  localStorage.setItem("userX", game.value.playerX.name);
   game.value.startGame = true;
   game.value.playerX.active = false; 
-  game.value.playerO.active = false;
+  game.value.playerO.active = false; 
 
   emit('start-game', true)
   emit('update:gameNames', {
@@ -51,14 +50,9 @@ const savePlayerYAndRenderGameBoard = () => {
 <template>
  <div>
     <div v-if="game.playerX.active">
-      <form @submit.prevent="savePlayerX">
+      <form @submit.prevent="savePlayerYAndRenderGameBoard">
         <h3>Player X: </h3>
         <input type="text" placeholder="Enter your name" v-model="game.playerX.name"/>
-        <button>Save</button>
-      </form>
-    </div>
-    <div v-if="game.playerO.active">
-      <form @submit.prevent="savePlayerYAndRenderGameBoard">
         <h3>Player O: </h3>
         <input type="text" placeholder="Enter your name" v-model="game.playerO.name"/>
         <button>Start Game</button>
