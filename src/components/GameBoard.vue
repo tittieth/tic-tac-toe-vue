@@ -9,16 +9,27 @@ for (let i = 0; i < rows; i++) {
   board.value.push(Array(columns).fill(''));
 }
 
+console.log('board' + board.value);
+
+
+const makeMove = (row:number, column:number) => {
+
+    console.log('rad' + row + 'kolumn' + column);
+    
+}
+
+const emit = defineEmits(['board-click']);
+
+const handleClick = () => {
+  emit('board-click');
+}
 
 </script>
 
 <template>
-    <div>
-        <h1>Tic tac toe</h1>
-    </div>
-    <div class="game-board">
+    <div class="game-board" @click="handleClick">
         <div v-for=" row in rows" :key="row" class="row">
-            <div v-for="column in columns" :key="column" class="cell">
+            <div @click="makeMove(row, column)" v-for="column in columns" :key="column" class="cell">
             </div>
         </div>
     </div>

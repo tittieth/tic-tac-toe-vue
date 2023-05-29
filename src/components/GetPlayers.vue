@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+import GameBoard from './GameBoard.vue';
+
+const startGame = ref(false);
 
 const game = ref({
     playerX: {
@@ -27,7 +30,8 @@ const props = defineProps({
 
 console.log(props.startGame);
 
-const emit = defineEmits(['start-game']);
+const emit = defineEmits(['start-game', 'update:gameNames']);
+
 
 const savePlayerYAndRenderGameBoard = () => {
   localStorage.setItem("userO", game.value.playerO.name);
@@ -36,6 +40,10 @@ const savePlayerYAndRenderGameBoard = () => {
   game.value.playerO.active = false;
 
   emit('start-game', true)
+  emit('update:gameNames', {
+      playerX: game.value.playerX.name,
+      playerO: game.value.playerO.name
+    });
 }
 
 </script>
@@ -56,6 +64,7 @@ const savePlayerYAndRenderGameBoard = () => {
         <button>Start Game</button>
       </form>
     </div>
+    <GameBoard v-if="startGame"/>
   </div>
 </template>
 
