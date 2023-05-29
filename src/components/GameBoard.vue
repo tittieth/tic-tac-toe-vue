@@ -23,27 +23,65 @@ for (let i = 0; i < rows; i++) {
 
 console.log('board' + board);
 
+const emit = defineEmits(['do-it']);
+
 
 const makeMove = (e: Event) => {
     emit('do-it')
     const target = e.target as HTMLElement;
-    target.innerHTML = props.currentPlayer === props.players.playerX ? 'X' : 'O';;
+    target.innerHTML = props.currentPlayer === props.players.playerX ? '<i class="fa-solid fa-xmark"></i>' : '<i class="fa-solid fa-circle"></i>';
     const row = Number(target.dataset.row);
     const column = Number(target.dataset.column);
     console.log('row:', row);
     console.log('column:', column);
     board.value[row][column] = props.currentPlayer === props.players.playerX ? 'X' : 'O';
-    console.log(board.value);
-    
+    console.log(board.value);  
+
+    calculateWinner(row, column, props.currentPlayer); {
+      console.log(`${props.currentPlayer} wins!`);
+    }
 }
 
-const emit = defineEmits(['do-it']);
 
 emit('do-it')
 
 // const handleClick = (e: Event) => {
 //     emit('do-it', e)
 // }
+
+const calculateWinner = (row: number, column: number, player: string): boolean => {
+  // Check horizontal
+  if (
+    board.value[row][0] === player &&
+    board.value[row][1] === player &&
+    board.value[row][2] === player
+  ) {
+    return true;
+  }
+
+  // Check vertical
+  if (
+    board.value[0][column] === player &&
+    board.value[1][column] === player &&
+    board.value[2][column] === player
+  ) {
+    return true;
+  }
+
+  // Check diagonal
+    if (
+        (board.value[0][0] === player &&
+        board.value[1][1] === player &&
+        board.value[2][2] === player) ||
+        (board.value[0][2] === player &&
+        board.value[1][1] === player &&
+        board.value[2][0] === player)
+    ) {
+        return true;
+    }
+
+  return false;
+}
 
 </script>
 
@@ -77,5 +115,15 @@ emit('do-it')
     align-items: center;
     justify-content: center;
     cursor: pointer;
+}
+
+.fa-xmark {
+    color: lightcoral;
+    font-size: 2rem;
+}
+
+.fa-circle {
+    color: lightskyblue;
+    font-size: 2rem;
 }
 </style>
