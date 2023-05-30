@@ -1,99 +1,98 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
+import GetPlayers from './GetPlayers.vue';
 
 const rows: number = 3;
 const columns: number = 3;
-const board: { value: string[][] } = ref([]);
-
-const gameFinished = ref(false);
+const board = ref([
+  ['', '', ''],
+  ['', '', ''],
+  ['', '', '']
+])
 
 interface ITestProps {
   players: {
     playerX: string;
     playerO: string;
-  };
-  currentPlayer: string;
+  }
 }
 
 const props = defineProps<ITestProps>();
-console.log('props ' + props.currentPlayer);
+console.log(props.players.playerX);
+
+const gameFinished = ref(false);
+const currentPlayer = ref(props.players.playerO);
+
+console.log(currentPlayer.value);
 
 
-for (let i = 0; i < rows; i++) {
-  board.value.push(Array(columns).fill(''));
+const togglePlayer = () => {
+  currentPlayer.value = currentPlayer.value === props.players.playerX ? props.players.playerO : props.players.playerX;
+  console.log(currentPlayer.value);
 }
 
-console.log('board' + board);
+// const setInitialPlayer = () => {
+//   currentPlayer.value = Math.random() < 0.5 ? props.players.playerX : props.players.playerO;
+//   console.log(currentPlayer.value);
+  
+// }; 
 
-const emit = defineEmits(['toggle-player']);
+const calculateWinner = board => {
+  const lines = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [2, 4, 6],
+  ]
+
+  for (let i = 0; i < lines.length; i++) {
+    const [a, b, c] = lines[i]
+    if (board[a] && board[a] === board[b] && board[a] === board[c]){
+      gameFinished.value = true;
+      return board[a]
+    }  
+  }
+  togglePlayer();
+  return null;
+}
 
 
 const makeMove = (e: Event) => {
+    if (gameFinished.value === true) {
+      return;
+    }
+
     const target = e.target as HTMLElement;
     const row = Number(target.dataset.row);
     const column = Number(target.dataset.column);
     console.log('row:', row);
     console.log('column:', column);
 
-    if (board.value[row][column] !== '') {
+    if (board.value[row][column] !== "") {
       return;
     }
     
-    target.innerHTML = props.currentPlayer === props.players.playerX ? '<i class="fa-solid fa-xmark"></i>' : '<i class="fa-solid fa-circle"></i>';
-    board.value[row][column] = props.currentPlayer === props.players.playerX ? 'X' : 'O';
-    console.log(board.value);  
-    emit('toggle-player')
+    target.innerHTML = currentPlayer.value === props.players.playerX ? 'X' : 'O';
+    board.value[row][column] = currentPlayer.value === props.players.playerX ? 'X' : 'O';
+    console.log(board.value); 
 
-
-    if (calculateWinner(row, column, props.currentPlayer)) {
-        console.log("winner is " + props.currentPlayer);
-    } 
+    calculateWinner(board.value.flat());
 }
 
-emit('toggle-player')
-
-const calculateWinner = (row: number, column: number, player: string): boolean => {
-  // Check horizontal
-  if (
-    board.value[row][0] === player &&
-    board.value[row][1] === player &&
-    board.value[row][2] === player
-  ) {
-    return true;
-  }
-
-  // Check vertical
-  if (
-    board.value[0][column] === player &&
-    board.value[1][column] === player &&
-    board.value[2][column] === player
-  ) {
-    return true;
-  }
-
-  // Check diagonal
-    if (
-        (board.value[0][0] === player &&
-        board.value[1][1] === player &&
-        board.value[2][2] === player) ||
-        (board.value[0][2] === player &&
-        board.value[1][1] === player &&
-        board.value[2][0] === player)
-    ) {
-        return true;
-        
-    }
-
-  return false;
-}
+// setInitialPlayer();
 
 </script>
 
 <template>
+  <h2 v-if="gameFinished">Winner: {{ currentPlayer }}</h2>
+    <h1 v-if="!gameFinished">Players move: {{ currentPlayer }}</h1>
     <div class="game-board">
         <div v-for="(row, i) in rows" :key="i" class="row">
             <div @click="makeMove" v-for="(column, index) in columns" :key="index" class="cell"
-                :data-column="index" :data-row="i">
+                :data-column="index" :data-row="i" :disabled="gameFinished">
             </div>
         </div>
     </div>
