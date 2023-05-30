@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
-import GetPlayers from './GetPlayers.vue';
+import { ref } from 'vue';
+import StartNewGame from './StartNewGame.vue';
 
 const rows: number = 3;
 const columns: number = 3;
@@ -45,6 +45,7 @@ const calculateWinner = board => {
     [0, 3, 6],
     [1, 4, 7],
     [2, 5, 8],
+    [0, 4, 8],
     [2, 4, 6],
   ]
 
@@ -82,6 +83,24 @@ const makeMove = (e: Event) => {
     calculateWinner(board.value.flat());
 }
 
+const playAgain = () => {
+    board.value = [
+    ['', '', ''],
+    ['', '', ''],
+    ['', '', '']
+  ]
+
+  const cells = document.querySelectorAll('.cell');
+  cells.forEach((cell) => {
+    cell.innerHTML = ''; 
+  });
+
+  gameFinished.value = false;
+  togglePlayer();
+  
+  console.log(board.value);
+}
+
 // setInitialPlayer();
 
 </script>
@@ -96,6 +115,7 @@ const makeMove = (e: Event) => {
             </div>
         </div>
     </div>
+    <StartNewGame @empty-board="playAgain"></StartNewGame>
 </template>
 
 
