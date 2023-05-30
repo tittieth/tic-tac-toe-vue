@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import GameBoard from './components/GameBoard.vue';
 import GetPlayers from './components/GetPlayers.vue';
+import StartingBanner from './components/startingBanner.vue';
 
 const startGame = ref(false);
 const players = ref({
@@ -38,6 +39,7 @@ const togglePlayer = () => {
 <template>
   <h1 v-if="startGame">Players move: {{ currentPlayer }}</h1>
   <main>
+    <StartingBanner />
     <GetPlayers :startGame="startGame" @start-game="startGameValue" @update:gameNames="getPlayers"></GetPlayers>
     <GameBoard v-if="startGame" :players="players" :currentPlayer="currentPlayer" @do-it="togglePlayer"/>
   </main>

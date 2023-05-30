@@ -5,6 +5,8 @@ const rows: number = 3;
 const columns: number = 3;
 const board: { value: string[][] } = ref([]);
 
+const gameFinished = ref(false);
+
 interface ITestProps {
   players: {
     playerX: string;
@@ -27,27 +29,39 @@ const emit = defineEmits(['do-it']);
 
 
 const makeMove = (e: Event) => {
-    emit('do-it')
     const target = e.target as HTMLElement;
-    target.innerHTML = props.currentPlayer === props.players.playerX ? '<i class="fa-solid fa-xmark"></i>' : '<i class="fa-solid fa-circle"></i>';
     const row = Number(target.dataset.row);
     const column = Number(target.dataset.column);
     console.log('row:', row);
     console.log('column:', column);
+
+    if (board.value[row][column] !== '') {
+      return;
+    }
+    
+    target.innerHTML = props.currentPlayer === props.players.playerX ? '<i class="fa-solid fa-xmark"></i>' : '<i class="fa-solid fa-circle"></i>';
     board.value[row][column] = props.currentPlayer === props.players.playerX ? 'X' : 'O';
     console.log(board.value);  
+    emit('do-it')
 
-    calculateWinner(row, column, props.currentPlayer); {
-      console.log(`${props.currentPlayer} wins!`);
-    }
+
+    if (calculateWinner(row, column, props.currentPlayer)) {
+        console.log("winner is " + props.currentPlayer);
+    } 
 }
 
+// const isBoardFull = (): boolean => {
+//   for (let i = 0; i < rows; i++) {
+//     for (let j = 0; j < columns; j++) {
+//       if (board.value[i][j] === '') {
+//         return false; // Om det finns minst en tom ruta, är brädet inte fullt
+//       }
+//     }
+//   }
+//   return true; // Om inga tomma rutor hittas är brädet fullt
+// }
 
 emit('do-it')
-
-// const handleClick = (e: Event) => {
-//     emit('do-it', e)
-// }
 
 const calculateWinner = (row: number, column: number, player: string): boolean => {
   // Check horizontal
@@ -78,6 +92,7 @@ const calculateWinner = (row: number, column: number, player: string): boolean =
         board.value[2][0] === player)
     ) {
         return true;
+        
     }
 
   return false;
