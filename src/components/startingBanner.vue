@@ -8,12 +8,18 @@
                 <span><i class="far fa-dot-circle sign sign__o"></i></span>
             </div>
             <div class="text__play" @click="$emit('click:play')">
-                <button class="hover-pointer">PLAY</button>
+                <button class="hover-pointer" @click="handleClick">PLAY</button>
             </div>
     </div>
 </template>
 
 <script setup lang="ts">
+
+const emit = defineEmits(['handlePlayBtn']);
+
+const handleClick = () => {
+    emit('handlePlayBtn')
+}
 
 </script>
 

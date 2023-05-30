@@ -25,7 +25,7 @@ for (let i = 0; i < rows; i++) {
 
 console.log('board' + board);
 
-const emit = defineEmits(['do-it']);
+const emit = defineEmits(['toggle-player']);
 
 
 const makeMove = (e: Event) => {
@@ -42,7 +42,7 @@ const makeMove = (e: Event) => {
     target.innerHTML = props.currentPlayer === props.players.playerX ? '<i class="fa-solid fa-xmark"></i>' : '<i class="fa-solid fa-circle"></i>';
     board.value[row][column] = props.currentPlayer === props.players.playerX ? 'X' : 'O';
     console.log(board.value);  
-    emit('do-it')
+    emit('toggle-player')
 
 
     if (calculateWinner(row, column, props.currentPlayer)) {
@@ -50,18 +50,7 @@ const makeMove = (e: Event) => {
     } 
 }
 
-// const isBoardFull = (): boolean => {
-//   for (let i = 0; i < rows; i++) {
-//     for (let j = 0; j < columns; j++) {
-//       if (board.value[i][j] === '') {
-//         return false; // Om det finns minst en tom ruta, är brädet inte fullt
-//       }
-//     }
-//   }
-//   return true; // Om inga tomma rutor hittas är brädet fullt
-// }
-
-emit('do-it')
+emit('toggle-player')
 
 const calculateWinner = (row: number, column: number, player: string): boolean => {
   // Check horizontal

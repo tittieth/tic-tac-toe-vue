@@ -10,6 +10,8 @@ const players = ref({
   playerO: ''
 });
 
+const show = ref(true);
+
 const currentPlayer = ref('');
 
 const setInitialPlayer = () => {
@@ -34,14 +36,18 @@ const togglePlayer = () => {
   
 }
 
+const toggleBanner = () => {
+  show.value = false;
+}
+
 </script>
 
 <template>
   <h1 v-if="startGame">Players move: {{ currentPlayer }}</h1>
   <main>
-    <StartingBanner />
-    <GetPlayers :startGame="startGame" @start-game="startGameValue" @update:gameNames="getPlayers"></GetPlayers>
-    <GameBoard v-if="startGame" :players="players" :currentPlayer="currentPlayer" @do-it="togglePlayer"/>
+    <StartingBanner v-if="show" @handlePlayBtn="toggleBanner"></StartingBanner>
+    <GetPlayers v-if="!show" :startGame="startGame" @start-game="startGameValue" @update:gameNames="getPlayers"></GetPlayers>
+    <GameBoard v-if="startGame" :players="players" :currentPlayer="currentPlayer" @toggle-player="togglePlayer"/>
   </main>
 </template>
 
