@@ -75,7 +75,7 @@ const makeMove = (e: Event) => {
       return;
     }
     
-    target.innerHTML = currentPlayer.value === props.players.playerX ? 'X' : 'O';
+    target.innerHTML = currentPlayer.value === props.players.playerX ? '<i class="fa-solid fa-xmark"></i>' : '<i class="fa-solid fa-circle"></i>';
     board.value[row][column] = currentPlayer.value === props.players.playerX ? 'X' : 'O';
     console.log(board.value); 
 
