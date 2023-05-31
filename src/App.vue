@@ -42,7 +42,7 @@ const endGame = () => {
   <main>
     <StartingBanner v-if="show" @handlePlayBtn="toggleBanner"></StartingBanner>
     <GetPlayers v-if="names" :startGame="startGame" @start-game="startGameValue" @update:gameNames="getPlayers"></GetPlayers>
-    <GameBoard v-if="startGame" :players="players" :startGame="startGame" @end-game="endGame"/>
+    <GameBoard v-if="startGame" :players="players" @end-game="endGame"/>
   </main>
 </template>
 
