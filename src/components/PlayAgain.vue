@@ -1,6 +1,6 @@
 <template>
     <div>
-        <button @click="newGame">Play again</button>
+        <button @click.prevent="newGame">Play again</button>
     </div>
 </template>
 

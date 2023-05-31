@@ -1,7 +1,7 @@
 <template>
     <div>
         <div>
-         <button @click="endGame">End Game</button>
+         <button @click.prevent="endGame">End Game</button>
         </div>
     </div>
 </template>

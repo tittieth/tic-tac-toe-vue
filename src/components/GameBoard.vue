@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import PlayAgain from './PlayAgain.vue';
 import ScoreBoard from './ScoreBoard.vue';
 import EndGame from './EndGame.vue';
@@ -12,9 +12,27 @@ const board = ref<string[][]>([
   ['', '', '']
 ])
 
+const loadSavedGame = () => {
+      const savedBoard = localStorage.getItem('board');
+      const savedPlayer = localStorage.getItem('currentPlayer');
+
+      if (savedBoard) {
+        board.value = JSON.parse(savedBoard);
+        console.log(board.value);
+      } if (savedPlayer) {
+        currentPlayer.value = JSON.parse(savedPlayer);
+      } else { 
+        togglePlayer();
+      }
+    };
+
+
+onMounted(() => {
+  loadSavedGame();
+});
+
 const winner = ref<string[]>([]);
 const tie = ref(false);
-
 const history = ref<string[]>([]);
 
 interface ITestProps {
@@ -28,14 +46,16 @@ const props = defineProps<ITestProps>();
 console.log(props.players.playerX);
 
 const gameFinished = ref(false);
-const currentPlayer = ref(props.players.playerO);
-
-console.log(currentPlayer.value);
-
+const currentPlayer = ref('');
 
 const togglePlayer = () => {
-  currentPlayer.value = currentPlayer.value === props.players.playerX ? props.players.playerO : props.players.playerX;
   console.log(currentPlayer.value);
+  console.log(props.players.playerO);
+  
+  currentPlayer.value = currentPlayer.value === props.players.playerX ? props.players.playerO : props.players.playerX;
+  console.log(props.players.playerO);
+  console.log(currentPlayer.value);
+  localStorage.setItem('currentPlayer', JSON.stringify(currentPlayer.value));
 }
 
 const calculateWinner = board => {
@@ -50,6 +70,8 @@ const calculateWinner = board => {
     [2, 4, 6],
   ]
 
+  console.log(currentPlayer.value);
+
   for (let i = 0; i < lines.length; i++) {
     const [a, b, c] = lines[i]
     if (board[a] && board[a] === board[b] && board[a] === board[c]){
@@ -57,6 +79,7 @@ const calculateWinner = board => {
       winner.value.push(currentPlayer.value);
       history.value.push(currentPlayer.value);
       console.log(winner.value);
+      console.log(currentPlayer.value);
       
       return board[a]
     }  
@@ -71,12 +94,12 @@ const calculateWinner = board => {
   return null;
 }
 
-
 const makeMove = (e: Event) => {
     if (gameFinished.value === true) {
       return;
     }
-
+    console.log(currentPlayer.value);
+    
     const target = e.target as HTMLElement;
     const row = Number(target.dataset.row);
     const column = Number(target.dataset.column);
@@ -87,9 +110,12 @@ const makeMove = (e: Event) => {
       return;
     }
     
-    target.innerHTML = currentPlayer.value === props.players.playerX ? '<i class="fa-solid fa-xmark"></i>' : '<i class="fa-solid fa-circle"></i>';
-    board.value[row][column] = currentPlayer.value === props.players.playerX ? 'X' : 'O';
+    const playerMark = currentPlayer.value === props.players.playerX ? 'X' : 'O';
+    board.value[row][column] = playerMark;
+    console.log(currentPlayer.value);
+    localStorage.setItem('board', JSON.stringify(board.value));
     console.log(board.value); 
+    console.log(currentPlayer.value);
 
     calculateWinner(board.value.flat());
 }
@@ -101,16 +127,11 @@ const playAgain = () => {
     ['', '', '']
   ]
 
-  const cells = document.querySelectorAll('.cell');
-  cells.forEach((cell) => {
-    cell.innerHTML = ''; 
-  });
-
   gameFinished.value = false;
   tie.value = false;
-  togglePlayer();
   
   console.log(board.value);
+  console.log(currentPlayer.value); 
 }
 
 const isBoardFull = () => {
@@ -141,6 +162,8 @@ const handleClick = () => {
         <div v-for="(row, i) in rows" :key="i" class="row">
             <div @click="makeMove" v-for="(column, index) in columns" :key="index" class="cell"
                 :data-column="index" :data-row="i" :disabled="gameFinished">
+                <span v-if="board[i][index] === 'X'" class="fa-solid fa-xmark"></span>
+                <span v-else-if="board[i][index] === 'O'" class="fa-solid fa-circle"></span>
             </div>
         </div>
     </div>

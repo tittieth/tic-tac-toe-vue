@@ -14,6 +14,12 @@ const players = ref({
 const show = ref(true);
 const names = ref(false);
 
+if (localStorage.getItem("board")) {
+    startGame.value = true;
+    show.value = false;
+    names.value = false;
+}
+
 
 const startGameValue = () => {
   startGame.value = true;
