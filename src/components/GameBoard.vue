@@ -15,10 +15,13 @@ const board = ref<string[][]>([
 const loadSavedGame = () => {
       const savedBoard = localStorage.getItem('board');
       const savedPlayer = localStorage.getItem('currentPlayer');
+      const savedHistory = localStorage.getItem('history');
 
       if (savedBoard) {
         board.value = JSON.parse(savedBoard);
         console.log(board.value);
+      } if (savedHistory) { 
+        history.value = JSON.parse(savedHistory)
       } if (savedPlayer) {
         currentPlayer.value = JSON.parse(savedPlayer);
       } else { 
@@ -78,6 +81,7 @@ const calculateWinner = board => {
       gameFinished.value = true;
       winner.value.push(currentPlayer.value);
       history.value.push(currentPlayer.value);
+      localStorage.setItem('history', JSON.stringify(history.value));
       console.log(winner.value);
       console.log(currentPlayer.value);
       
