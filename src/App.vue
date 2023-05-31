@@ -2,7 +2,7 @@
 import { ref } from 'vue';
 import GameBoard from './components/GameBoard.vue';
 import GetPlayers from './components/GetPlayers.vue';
-import StartingBanner from './components/startingBanner.vue';
+import StartingBanner from './components/StartingBanner.vue';
 
 const startGame = ref(false);
 

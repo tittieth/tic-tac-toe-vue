@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import StartNewGame from './StartNewGame.vue';
+import ScoreBoard from './ScoreBoard.vue';
 
 const rows: number = 3;
 const columns: number = 3;
@@ -9,6 +10,11 @@ const board = ref([
   ['', '', ''],
   ['', '', '']
 ])
+
+const winner = ref([]);
+const tie = ref(false);
+
+const history = ref([]);
 
 interface ITestProps {
   players: {
@@ -31,12 +37,6 @@ const togglePlayer = () => {
   console.log(currentPlayer.value);
 }
 
-// const setInitialPlayer = () => {
-//   currentPlayer.value = Math.random() < 0.5 ? props.players.playerX : props.players.playerO;
-//   console.log(currentPlayer.value);
-  
-// }; 
-
 const calculateWinner = board => {
   const lines = [
     [0, 1, 2],
@@ -53,9 +53,19 @@ const calculateWinner = board => {
     const [a, b, c] = lines[i]
     if (board[a] && board[a] === board[b] && board[a] === board[c]){
       gameFinished.value = true;
+      winner.value.push(currentPlayer.value);
+      history.value.push(currentPlayer.value);
+      console.log(winner.value);
+      
       return board[a]
     }  
   }
+
+  if (isBoardFull()) {
+    tie.value = true;
+    console.log('oavgjort');
+  }
+
   togglePlayer();
   return null;
 }
@@ -96,17 +106,28 @@ const playAgain = () => {
   });
 
   gameFinished.value = false;
+  tie.value = false;
   togglePlayer();
   
   console.log(board.value);
 }
 
-// setInitialPlayer();
+const isBoardFull = () => {
+  for (let row = 0; row < board.value.length; row++) {
+    for (let col = 0; col < board.value[row].length; col++) {
+      if (board.value[row][col] === '') {
+        return false; 
+      }
+    }
+  }
+  return true; 
+};
 
 </script>
 
 <template>
-  <h2 v-if="gameFinished">Winner: {{ currentPlayer }}</h2>
+    <h2 v-if="gameFinished">Winner: {{ currentPlayer }}</h2>
+    <h2 v-if="tie">It's a tie!</h2>
     <h1 v-if="!gameFinished">Players move: {{ currentPlayer }}</h1>
     <div class="game-board">
         <div v-for="(row, i) in rows" :key="i" class="row">
@@ -116,6 +137,7 @@ const playAgain = () => {
         </div>
     </div>
     <StartNewGame @empty-board="playAgain"></StartNewGame>
+    <ScoreBoard :history="history"></ScoreBoard>
 </template>
 
 
