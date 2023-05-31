@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import StartNewGame from './StartNewGame.vue';
+import PlayAgain from './PlayAgain.vue';
 import ScoreBoard from './ScoreBoard.vue';
+import EndGame from './EndGame.vue';
 
 const rows: number = 3;
 const columns: number = 3;
@@ -123,6 +124,11 @@ const isBoardFull = () => {
   return true; 
 };
 
+const endGame = () => {
+  console.log('endGame');
+  
+}
+
 </script>
 
 <template>
@@ -136,8 +142,9 @@ const isBoardFull = () => {
             </div>
         </div>
     </div>
-    <StartNewGame @empty-board="playAgain"></StartNewGame>
+    <PlayAgain @empty-board="playAgain"></PlayAgain>
     <ScoreBoard :history="history"></ScoreBoard>
+    <EndGame @end-game="endGame"></EndGame>
 </template>
 
 
