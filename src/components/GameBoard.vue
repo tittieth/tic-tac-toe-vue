@@ -5,16 +5,16 @@ import ScoreBoard from './ScoreBoard.vue';
 
 const rows: number = 3;
 const columns: number = 3;
-const board = ref([
+const board = ref<string[][]>([
   ['', '', ''],
   ['', '', ''],
   ['', '', '']
 ])
 
-const winner = ref([]);
+const winner = ref<string[]>([]);
 const tie = ref(false);
 
-const history = ref([]);
+const history = ref<string[]>([]);
 
 interface ITestProps {
   players: {
