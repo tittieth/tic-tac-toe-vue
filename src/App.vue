@@ -12,10 +12,12 @@ const players = ref({
 });
 
 const show = ref(true);
+const names = ref(false);
 
 
-const startGameValue = (value: boolean) => {
-  startGame.value = value;
+const startGameValue = () => {
+  startGame.value = true;
+  names.value = false;
 }
 
 const getPlayers = (names: { playerX: string, playerO: string }) => {
@@ -25,6 +27,13 @@ const getPlayers = (names: { playerX: string, playerO: string }) => {
 
 const toggleBanner = () => {
   show.value = false;
+  names.value = true;
+}
+
+const endGame = () => {
+  startGame.value = false; 
+  show.value = true; 
+  localStorage.clear();
 }
 
 </script>
@@ -32,8 +41,8 @@ const toggleBanner = () => {
 <template>
   <main>
     <StartingBanner v-if="show" @handlePlayBtn="toggleBanner"></StartingBanner>
-    <GetPlayers v-if="!show" :startGame="startGame" @start-game="startGameValue" @update:gameNames="getPlayers"></GetPlayers>
-    <GameBoard v-if="startGame" :players="players" />
+    <GetPlayers v-if="names" :startGame="startGame" @start-game="startGameValue" @update:gameNames="getPlayers"></GetPlayers>
+    <GameBoard v-if="startGame" :players="players" :startGame="startGame" @end-game="endGame"/>
   </main>
 </template>
 

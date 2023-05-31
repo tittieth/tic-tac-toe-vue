@@ -124,9 +124,11 @@ const isBoardFull = () => {
   return true; 
 };
 
-const endGame = () => {
+const emits = defineEmits(["end-game"]);
+
+const handleClick = () => {
   console.log('endGame');
-  
+  emits('end-game')
 }
 
 </script>
@@ -143,8 +145,8 @@ const endGame = () => {
         </div>
     </div>
     <PlayAgain @empty-board="playAgain"></PlayAgain>
+    <EndGame @end-game="handleClick"></EndGame>
     <ScoreBoard :history="history"></ScoreBoard>
-    <EndGame @end-game="endGame"></EndGame>
 </template>
 
 

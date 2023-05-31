@@ -1,47 +1,25 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import GameBoard from './GameBoard.vue';
 
-const startGame = ref(false);
-
-const game = ref({
+const players = ref({
     playerX: {
       name: '',
-      active: true,
     },
     playerO: {
       name: '',
-      active: true,
-    },
-    startGame: false,
+    }
   });
-
-// const savePlayerX = () => {
-//     console.log(game.value.playerX.name);
-//     localStorage.setItem("userX", game.value.playerX.name);
-//     game.value.playerX.active = false; 
-//     game.value.playerO.active = true;
-//     console.log(game.value.playerO.active);
-// };
-
-const props = defineProps({
-  startGame: Boolean
-});
 
 const emit = defineEmits(['start-game', 'update:gameNames']);
 
+const savePlayersToLs = () => {
+  localStorage.setItem("userO", players.value.playerO.name);
+  localStorage.setItem("userX", players.value.playerX.name);
 
-const savePlayerYAndRenderGameBoard = () => {
-  localStorage.setItem("userO", game.value.playerO.name);
-  localStorage.setItem("userX", game.value.playerX.name);
-  game.value.startGame = true;
-  game.value.playerX.active = false; 
-  game.value.playerO.active = false; 
-
-  emit('start-game', true)
+  emit('start-game')
   emit('update:gameNames', {
-      playerX: game.value.playerX.name,
-      playerO: game.value.playerO.name
+      playerX: players.value.playerX.name,
+      playerO: players.value.playerO.name
     });
 }
 
@@ -49,16 +27,15 @@ const savePlayerYAndRenderGameBoard = () => {
 
 <template>
  <div>
-    <div v-if="game.playerX.active">
-      <form @submit.prevent="savePlayerYAndRenderGameBoard">
+    <div>
+      <form @submit.prevent="savePlayersToLs">
         <h3>Player X: </h3>
-        <input type="text" placeholder="Enter your name" v-model="game.playerX.name"/>
+        <input type="text" placeholder="Enter your name" v-model="players.playerX.name"/>
         <h3>Player O: </h3>
-        <input type="text" placeholder="Enter your name" v-model="game.playerO.name"/>
+        <input type="text" placeholder="Enter your name" v-model="players.playerO.name"/>
         <button>Start Game</button>
       </form>
     </div>
-    <GameBoard v-if="startGame"/>
   </div>
 </template>
 
