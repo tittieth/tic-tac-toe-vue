@@ -37,6 +37,8 @@ onMounted(() => {
 const winner = ref<string[]>([]);
 const tie = ref(false);
 const history = ref<string[]>([]);
+const playerX = ref<string | null>(JSON.parse(localStorage.getItem('userX') || 'null'));
+const playerO = ref<string | null>(JSON.parse(localStorage.getItem('userO') || 'null'));
 
 interface ITestProps {
   players: {
@@ -45,17 +47,18 @@ interface ITestProps {
   }
 }
 
+
 const props = defineProps<ITestProps>();
 console.log(props.players.playerX);
 
 const gameFinished = ref(false);
-const currentPlayer = ref('');
+const currentPlayer = ref<string | null>();
 
 const togglePlayer = () => {
   console.log(currentPlayer.value);
   console.log(props.players.playerO);
   
-  currentPlayer.value = currentPlayer.value === props.players.playerX ? props.players.playerO : props.players.playerX;
+  currentPlayer.value = currentPlayer.value === playerX.value ? playerO.value : playerX.value;
   console.log(props.players.playerO);
   console.log(currentPlayer.value);
   localStorage.setItem('currentPlayer', JSON.stringify(currentPlayer.value));
@@ -79,8 +82,8 @@ const calculateWinner = board => {
     const [a, b, c] = lines[i]
     if (board[a] && board[a] === board[b] && board[a] === board[c]){
       gameFinished.value = true;
-      winner.value.push(currentPlayer.value);
-      history.value.push(currentPlayer.value);
+      winner.value.push(currentPlayer.value as string);
+      history.value.push(currentPlayer.value as string);
       localStorage.setItem('history', JSON.stringify(history.value));
       console.log(winner.value);
       console.log(currentPlayer.value);
@@ -114,7 +117,7 @@ const makeMove = (e: Event) => {
       return;
     }
     
-    const playerMark = currentPlayer.value === props.players.playerX ? 'X' : 'O';
+    const playerMark = currentPlayer.value === playerX.value ? 'X' : 'O';
     board.value[row][column] = playerMark;
     console.log(currentPlayer.value);
     localStorage.setItem('board', JSON.stringify(board.value));
@@ -199,12 +202,12 @@ const handleClick = () => {
 }
 
 .fa-xmark {
-    color: lightcoral;
+    color: #f0c2e2;
     font-size: 2rem;
 }
 
 .fa-circle {
-    color: lightskyblue;
+    color: #aaebc8;
     font-size: 2rem;
 }
 </style>

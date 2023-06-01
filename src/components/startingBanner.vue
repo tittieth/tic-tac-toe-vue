@@ -50,10 +50,18 @@ transform: translate(0, 100%) rotate(4deg);
 animation: jump 2s ease-in-out;
 display: inline-block;
 font-family: "Titan One", cursive;
-color: #fff;
+color: #f0c2e2;
     @media screen and (max-width: 576px) {
         font-size: 70px;
     }
+}
+
+span:nth-child(3) {
+    color: #aaebc8;
+}
+
+span:nth-child(4) {
+    color: #aee2f1;
 }
 .sign {
     font-size: 90px;

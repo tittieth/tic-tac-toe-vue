@@ -13,8 +13,8 @@ const players = ref({
 const emit = defineEmits(['start-game', 'update:gameNames']);
 
 const savePlayersToLs = () => {
-  localStorage.setItem("userO", players.value.playerO.name);
-  localStorage.setItem("userX", players.value.playerX.name);
+  localStorage.setItem("userO", JSON.stringify(players.value.playerO.name));
+  localStorage.setItem("userX", JSON.stringify(players.value.playerX.name));
 
   emit('start-game')
   emit('update:gameNames', {
