@@ -61,6 +61,7 @@ const savePlayersToLs = () => {
 span {
   display: block;
   margin-top: 100px;
+  font-size: 1.5rem;
 }
 
 h3 {
