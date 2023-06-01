@@ -162,9 +162,11 @@ const handleClick = () => {
 </script>
 
 <template>
-    <h2 v-if="gameFinished">Winner: {{ currentPlayer }}</h2>
-    <h2 v-if="tie">It's a tie!</h2>
-    <h1 v-if="!gameFinished">Players move: {{ currentPlayer }}</h1>
+  <div class="wrapper">
+    <div>
+    <h2 v-if="gameFinished">Winner: {{ currentPlayer }} 🥳</h2>
+    <h2 v-if="tie">It's a tie!<br> Nobody won!</h2>
+    <h1 v-if="!gameFinished && !tie">Players move: {{ currentPlayer }}</h1>
     <div class="game-board">
         <div v-for="(row, i) in rows" :key="i" class="row">
             <div @click="makeMove" v-for="(column, index) in columns" :key="index" class="cell"
@@ -174,17 +176,39 @@ const handleClick = () => {
             </div>
         </div>
     </div>
-    <PlayAgain @empty-board="playAgain"></PlayAgain>
+    <PlayAgain @empty-board="playAgain" class="btn"></PlayAgain>
     <EndGame @end-game="handleClick"></EndGame>
+  </div>
+  <div>
     <ScoreBoard :history="history"></ScoreBoard>
+  </div>
+  </div>
 </template>
 
 
 <style scoped>
+h1 {
+  font-size: 1.5rem;
+}
+
+h2 {
+  font-size: 2.5rem;
+}
+.wrapper {
+  width: 100vw;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+  background-color: lightblue;
+}
+
 .game-board {
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin: 40px 0;
 }
 
 .row {
@@ -194,7 +218,8 @@ const handleClick = () => {
 .cell {
     width: 100px;
     height: 100px;
-    border: 1px solid #ccc;
+    background-color: white;
+    border: 1px solid #aaebc8;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -209,5 +234,9 @@ const handleClick = () => {
 .fa-circle {
     color: #aaebc8;
     font-size: 2rem;
+}
+
+.btn {
+  margin-bottom: 20px;
 }
 </style>

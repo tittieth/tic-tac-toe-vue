@@ -14,5 +14,7 @@ const emits = defineEmits(["empty-board"]);
 </script>
 
 <style scoped>
-
+button {
+    padding: 15px 30px;
+}
 </style>
