@@ -169,8 +169,8 @@ const handleClick = () => {
     <h1 v-if="!gameFinished && !tie">Players move: {{ currentPlayer }}</h1>
     <div class="game-board">
         <div v-for="(row, i) in rows" :key="i" class="row">
-            <div @click="makeMove" v-for="(column, index) in columns" :key="index" class="cell"
-                :data-column="index" :data-row="i" :disabled="gameFinished">
+            <div @click="makeMove" @keyup.enter="makeMove" v-for="(column, index) in columns" :key="index" class="cell"
+                :data-column="index" :data-row="i" :disabled="gameFinished" :tabindex="gameFinished || tie ? -1 : 0">
                 <span v-if="board[i][index] === 'X'" class="fa-solid fa-xmark"></span>
                 <span v-else-if="board[i][index] === 'O'" class="fa-solid fa-circle"></span>
             </div>
