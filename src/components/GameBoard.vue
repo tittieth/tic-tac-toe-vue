@@ -64,7 +64,7 @@ const togglePlayer = () => {
   localStorage.setItem('currentPlayer', JSON.stringify(currentPlayer.value));
 }
 
-const calculateWinner = board => {
+const calculateWinner = (board: string[]): string | null => {
   const lines = [
     [0, 1, 2],
     [3, 4, 5],
@@ -74,7 +74,7 @@ const calculateWinner = board => {
     [2, 5, 8],
     [0, 4, 8],
     [2, 4, 6],
-  ]
+  ];
 
   console.log(currentPlayer.value);
 
