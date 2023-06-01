@@ -24,9 +24,9 @@ const loadSavedGame = () => {
         history.value = JSON.parse(savedHistory)
       } if (savedPlayer) {
         currentPlayer.value = JSON.parse(savedPlayer);
-      } else { 
-        togglePlayer();
-      }
+       } else { 
+           togglePlayer();
+       }
     };
 
 
