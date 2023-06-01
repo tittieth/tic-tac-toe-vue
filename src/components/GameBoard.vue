@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, Ref } from 'vue';
 import PlayAgain from './PlayAgain.vue';
 import ScoreBoard from './ScoreBoard.vue';
 import EndGame from './EndGame.vue';
@@ -20,6 +20,7 @@ const loadSavedGame = () => {
       if (savedBoard) {
         board.value = JSON.parse(savedBoard);
         console.log(board.value);
+        calculateWinner(board.value.flat());
       } if (savedHistory) { 
         history.value = JSON.parse(savedHistory)
       } if (savedPlayer) {
@@ -34,11 +35,24 @@ onMounted(() => {
   loadSavedGame();
 });
 
+interface Player {
+  name: string | null;
+  gamePoints: Ref<number>;
+}
+
 const winner = ref<string[]>([]);
 const tie = ref(false);
 const history = ref<string[]>([]);
-const playerX = ref<string | null>(JSON.parse(localStorage.getItem('userX') || 'null'));
-const playerO = ref<string | null>(JSON.parse(localStorage.getItem('userO') || 'null'));
+
+const playerX: Player = {
+  name: JSON.parse(localStorage.getItem('userX') || 'null'),
+  gamePoints: ref(Number(localStorage.getItem('pointsUserX')) || 0),
+};
+
+const playerO: Player = {
+  name: JSON.parse(localStorage.getItem('userO') || 'null'),
+  gamePoints: ref(Number(localStorage.getItem('pointsUserO')) || 0),
+};
 
 interface ITestProps {
   players: {
@@ -56,11 +70,8 @@ const currentPlayer = ref<string | null>();
 
 const togglePlayer = () => {
   console.log(currentPlayer.value);
-  console.log(props.players.playerO);
   
-  currentPlayer.value = currentPlayer.value === playerX.value ? playerO.value : playerX.value;
-  console.log(props.players.playerO);
-  console.log(currentPlayer.value);
+  currentPlayer.value = currentPlayer.value === playerX.name ? playerO.name : playerX.name;
   localStorage.setItem('currentPlayer', JSON.stringify(currentPlayer.value));
 }
 
@@ -87,7 +98,11 @@ const calculateWinner = (board: string[]): string | null => {
       localStorage.setItem('history', JSON.stringify(history.value));
       console.log(winner.value);
       console.log(currentPlayer.value);
-      
+     
+      playerX.gamePoints.value = currentPlayer.value === playerX.name ? playerX.gamePoints.value + 1: playerX.gamePoints.value;
+      playerO.gamePoints.value = currentPlayer.value === playerO.name ? playerO.gamePoints.value + 1 : playerO.gamePoints.value;
+      localStorage.setItem('pointsUserX', JSON.stringify(playerX.gamePoints.value));
+      localStorage.setItem('pointsUserO', JSON.stringify(playerO.gamePoints.value));
       return board[a]
     }  
   }
@@ -117,7 +132,7 @@ const makeMove = (e: Event) => {
       return;
     }
     
-    const playerMark = currentPlayer.value === playerX.value ? 'X' : 'O';
+    const playerMark = currentPlayer.value === playerX.name? 'X' : 'O';
     board.value[row][column] = playerMark;
     console.log(currentPlayer.value);
     localStorage.setItem('board', JSON.stringify(board.value));
@@ -181,6 +196,8 @@ const handleClick = () => {
   </div>
   <div>
     <ScoreBoard :history="history"></ScoreBoard>
+    <div>{{ playerO.name }}: {{ playerO.gamePoints }} </div>
+    <div>{{ playerX.name }}: {{ playerX.gamePoints }} </div>
   </div>
   </div>
 </template>
