@@ -1,5 +1,5 @@
 <template>
-    <div class="banner">
+    <div class="banner visible">
         <div class="wrapper">
                 <span><i class="fas fa-times sign sign__x"></i></span>
                 <span>TIC</span>
@@ -30,7 +30,7 @@ const handleClick = () => {
     z-index: 1; 
     background: rgb(240,194,226);
     background: linear-gradient(148deg, rgba(240,194,226,1) 0%, rgba(174,226,241,1) 71%, rgba(170,235,200,1) 100%);
-    /* transition: top 1s; */
+    transition: top 1s;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -42,18 +42,24 @@ const handleClick = () => {
 }
 
 span {
- -webkit-text-stroke-width: 1.25px;
--webkit-text-stroke-color: #000;
-font-size: 80px;
-text-shadow: 0 0px #f3c623, 0 0px #f2aaaa;
-transform: translate(0, 100%) rotate(4deg);
-animation: jump 2s ease-in-out;
-display: inline-block;
-font-family: "Titan One", cursive;
-color: #f0c2e2;
-    @media screen and (max-width: 576px) {
-        font-size: 70px;
-    }
+    -webkit-text-stroke-width: 1.25px;
+    -webkit-text-stroke-color: #000;
+    font-size: 80px;
+    text-shadow: 0 0px #C6A664, 0 0px #f2aaaa;
+    transform: translate(0, 100%) rotate(4deg);
+    animation: jump 2s ease-in-out;
+    display: inline-block;
+    font-family: "Titan One", cursive;
+    color: #f0c2e2;
+        @media screen and (max-width: 576px) {
+            font-size: 70px;
+        }
+}
+
+span:nth-child(2) {
+    margin-left: -120px;
+    margin-bottom: -20px;
+    margin-top: -50px;
 }
 
 span:nth-child(3) {
@@ -62,19 +68,34 @@ span:nth-child(3) {
 
 span:nth-child(4) {
     color: #aee2f1;
+    margin-left: 120px;
+    margin-top: -20px;
+    z-index: 5;
 }
 .sign {
-    font-size: 90px;
+    display: block;
+    font-size: 150px;
     @media screen and (max-width: 576px) {
-        font-size: 40px;
+        font-size: 80px;
     }
+}
+
+.sign__o{
+    margin-left: 280px;
+    margin-bottom: -20px;
+}
+
+.sign__x{
+    margin-left: -250px;
+    margin-top: 40px;
+    color: #aaebc8;
 }
 
 .wrapper {
   position: relative;
   display: flex;
   flex-direction: column;
-  top: -100px;
+  top: -140px;
   width: 100vw;
   text-align: center;
   @media screen and (max-height: 200px) {
@@ -83,8 +104,23 @@ span:nth-child(4) {
 }
 
 button {
-    margin-top: 40px;
+    margin-top: 50px;
     padding: 25px 95px;
+    background-color:rgb(240, 194, 226, 0.8);
+    border: 1px solid black;
+}
+
+@keyframes jump {
+  33% {
+    text-shadow: 0 60px #C6A664, 0 150px #f0c2e2;
+  }
+  50% {
+    transform: translate(0, 0) rotate(-4deg);
+    text-shadow: 0 0px #aaebc8, 0 0px whitesmoke;
+  }
+  66.67% {
+    text-shadow: 0 -60px #C6A664, 0 -150px whitesmoke;
+  }
 }
 
 </style>
