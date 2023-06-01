@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 
+const errorMsg = ref('');
+
 const players = ref({
     playerX: {
       name: '',
@@ -13,20 +15,28 @@ const players = ref({
 const emit = defineEmits(['start-game', 'update:gameNames']);
 
 const savePlayersToLs = () => {
-  localStorage.setItem("userO", JSON.stringify(players.value.playerO.name));
-  localStorage.setItem("userX", JSON.stringify(players.value.playerX.name));
+  const usernameRegex = /^[a-zA-Z]+$/
 
-  emit('start-game')
-  emit('update:gameNames', {
-      playerX: players.value.playerX.name,
-      playerO: players.value.playerO.name
-    });
+  if (!usernameRegex.test(players.value.playerX.name && players.value.playerO.name)) {
+    errorMsg.value = "Enter both usernames, letters a-z.";
+    return
+  } else {
+    localStorage.setItem("userO", JSON.stringify(players.value.playerO.name));
+    localStorage.setItem("userX", JSON.stringify(players.value.playerX.name));
+
+    emit('start-game');
+    emit('update:gameNames', {
+        playerX: players.value.playerX.name,
+        playerO: players.value.playerO.name
+      });
+  }
 }
 
 </script>
 
 <template>
  <div class="wrapper"> 
+    <span>{{ errorMsg }}</span>
     <form @submit.prevent="savePlayersToLs">
       <h3>Player X: </h3>
       <input type="text" placeholder="Enter your name" v-model="players.playerX.name"/>
@@ -44,7 +54,13 @@ const savePlayersToLs = () => {
   width: 100vw;
   background-color: lightblue;
   display: flex;
+  flex-direction: column;
   justify-content: center;
+}
+
+span {
+  display: block;
+  margin-top: 100px;
 }
 
 h3 {
@@ -58,6 +74,7 @@ form {
   flex-direction: column;
   justify-content: center;
   align-content: center;
+  margin: 50px;
 }
 
 input {
