@@ -7,8 +7,8 @@
                 <span>TOE</span>
                 <span><i class="far fa-dot-circle sign sign__o"></i></span>
             </div>
-            <div class="text__play" @click="$emit('click:play')">
-                <button class="hover-pointer" @click="handleClick">PLAY</button>
+            <div>
+                <button @click="handleClick">PLAY</button>
             </div>
     </div>
 </template>
