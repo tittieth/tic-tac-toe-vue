@@ -31,7 +31,6 @@ const savePlayersToLs = () => {
       });
   }
 }
-
 </script>
 
 <template>

@@ -1,5 +1,15 @@
+<script setup lang="ts">
+
+const emit = defineEmits(['handlePlayBtn']);
+
+const handleClick = () => {
+    emit('handlePlayBtn')
+}
+
+</script>
+
 <template>
-    <div class="banner visible">
+    <div class="banner">
         <div class="wrapper">
                 <span><i class="fas fa-times sign sign__x"></i></span>
                 <span>TIC</span>
@@ -13,16 +23,6 @@
     </div>
 </template>
 
-<script setup lang="ts">
-
-const emit = defineEmits(['handlePlayBtn']);
-
-const handleClick = () => {
-    emit('handlePlayBtn')
-}
-
-</script>
-
 <style scoped>
 .banner {
     width: 100vw;
@@ -35,10 +35,6 @@ const handleClick = () => {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-}
-.visible {
-    top: 0;
-    transition: top 1s;
 }
 
 span {

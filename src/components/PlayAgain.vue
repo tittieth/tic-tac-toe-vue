@@ -1,9 +1,3 @@
-<template>
-    <div>
-        <button @click.prevent="newGame">Play again</button>
-    </div>
-</template>
-
 <script setup lang="ts">
 
 const emits = defineEmits(["empty-board"]);
@@ -12,6 +6,12 @@ const emits = defineEmits(["empty-board"]);
     emits("empty-board")
  }
 </script>
+
+<template>
+    <div>
+        <button @click.prevent="newGame">Play again</button>
+    </div>
+</template>
 
 <style scoped>
 button {

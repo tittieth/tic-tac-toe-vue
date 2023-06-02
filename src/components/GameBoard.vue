@@ -5,6 +5,9 @@ import ScoreBoard from './ScoreBoard.vue';
 import EndGame from './EndGame.vue';
 import { IPlayer } from '../models/IPlayer';
 
+const winner = ref<string[]>([]);
+const tie = ref(false);
+const history = ref<string[]>([]);
 const rows: number = 3;
 const columns: number = 3;
 const board = ref<string[][]>([
@@ -20,7 +23,6 @@ const loadSavedGame = () => {
 
       if (savedBoard) {
         board.value = JSON.parse(savedBoard);
-        console.log(board.value);
         calculateWinner(board.value.flat());
       } if (savedHistory) { 
         history.value = JSON.parse(savedHistory)
@@ -30,15 +32,6 @@ const loadSavedGame = () => {
            togglePlayer();
        }
     };
-
-
-onMounted(() => {
-  loadSavedGame();
-});
-
-const winner = ref<string[]>([]);
-const tie = ref(false);
-const history = ref<string[]>([]);
 
 const playerX: IPlayer = {
   name: JSON.parse(localStorage.getItem('userX') || 'null'),
@@ -53,9 +46,7 @@ const playerO: IPlayer = {
 const gameFinished = ref(false);
 const currentPlayer = ref<string | null>();
 
-const togglePlayer = () => {
-  console.log(currentPlayer.value);
-  
+const togglePlayer = () => { 
   currentPlayer.value = currentPlayer.value === playerX.name ? playerO.name : playerX.name;
   localStorage.setItem('currentPlayer', JSON.stringify(currentPlayer.value));
 }
@@ -72,8 +63,6 @@ const calculateWinner = (board: string[]): string | null => {
     [2, 4, 6],
   ];
 
-  console.log(currentPlayer.value);
-
   for (let i = 0; i < lines.length; i++) {
     const [a, b, c] = lines[i]
     if (board[a] && board[a] === board[b] && board[a] === board[c]){
@@ -81,8 +70,6 @@ const calculateWinner = (board: string[]): string | null => {
       winner.value.push(currentPlayer.value as string);
       history.value.push(currentPlayer.value as string);
       localStorage.setItem('history', JSON.stringify(history.value));
-      console.log(winner.value);
-      console.log(currentPlayer.value);
      
       playerX.gamePoints.value = currentPlayer.value === playerX.name ? playerX.gamePoints.value + 1: playerX.gamePoints.value;
       playerO.gamePoints.value = currentPlayer.value === playerO.name ? playerO.gamePoints.value + 1 : playerO.gamePoints.value;
@@ -94,7 +81,6 @@ const calculateWinner = (board: string[]): string | null => {
 
   if (isBoardFull()) {
     tie.value = true;
-    console.log('oavgjort');
   }
 
   togglePlayer();
@@ -105,13 +91,10 @@ const makeMove = (e: Event) => {
     if (gameFinished.value === true) {
       return;
     }
-    console.log(currentPlayer.value);
-    
+
     const target = e.target as HTMLElement;
     const row = Number(target.dataset.row);
     const column = Number(target.dataset.column);
-    console.log('row:', row);
-    console.log('column:', column);
 
     if (board.value[row][column] !== "") {
       return;
@@ -119,10 +102,7 @@ const makeMove = (e: Event) => {
     
     const playerMark = currentPlayer.value === playerX.name? 'X' : 'O';
     board.value[row][column] = playerMark;
-    console.log(currentPlayer.value);
     localStorage.setItem('board', JSON.stringify(board.value));
-    console.log(board.value); 
-    console.log(currentPlayer.value);
 
     calculateWinner(board.value.flat());
 }
@@ -136,9 +116,6 @@ const playAgain = () => {
 
   gameFinished.value = false;
   tie.value = false;
-  
-  console.log(board.value);
-  console.log(currentPlayer.value); 
 }
 
 const isBoardFull = () => {
@@ -155,9 +132,12 @@ const isBoardFull = () => {
 const emits = defineEmits(["end-game"]);
 
 const handleClick = () => {
-  console.log('endGame');
   emits('end-game')
 }
+
+onMounted(() => {
+  loadSavedGame();
+});
 
 </script>
 
