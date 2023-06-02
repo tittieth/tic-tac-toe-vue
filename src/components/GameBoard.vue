@@ -182,6 +182,9 @@ h2 {
   justify-content: center;
   align-content: center;
   background-color: lightblue;
+  @media screen and (min-width: 1220px) {
+    padding: 150px 0;
+  }
   @media screen and (max-width: 1220px) {
     flex-direction: column;
   }

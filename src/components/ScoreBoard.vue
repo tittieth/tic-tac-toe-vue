@@ -34,7 +34,7 @@ const props = defineProps({
             border: 2px solid #C6A664;
             position: absolute;
             margin: 100px 0 0 100px;
-            padding: 40px;
+            padding: 10px 40px 40px;
             border-radius: 6px;
         }
 }
