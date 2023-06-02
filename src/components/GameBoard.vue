@@ -144,24 +144,24 @@ onMounted(() => {
 <template>
   <div class="wrapper">
     <div>
-    <h2 v-if="gameFinished">Winner: {{ currentPlayer }} 🥳</h2>
-    <h2 v-if="tie">It's a tie!<br> Nobody won!</h2>
-    <h1 v-if="!gameFinished && !tie">Players move: {{ currentPlayer }}</h1>
-    <div class="game-board">
-        <div v-for="(row, i) in rows" :key="i" class="row">
-            <div @click="makeMove" @keyup.enter="makeMove" v-for="(column, index) in columns" :key="index" class="cell"
-                :data-column="index" :data-row="i" :disabled="gameFinished" :tabindex="gameFinished || tie ? -1 : 0">
-                <span v-if="board[i][index] === 'X'" class="fa-solid fa-xmark"></span>
-                <span v-else-if="board[i][index] === 'O'" class="fa-solid fa-circle"></span>
-            </div>
-        </div>
+      <h2 v-if="gameFinished">Winner: {{ currentPlayer }} 🥳</h2>
+      <h2 v-if="tie">It's a tie!<br> Nobody won!</h2>
+      <h1 v-if="!gameFinished && !tie">Players move: {{ currentPlayer }}</h1>
+      <div class="game-board">
+          <div v-for="(row, i) in rows" :key="i" class="row">
+              <div @click="makeMove" @keyup.enter="makeMove" v-for="(column, index) in columns" :key="index" class="cell"
+                  :data-column="index" :data-row="i" :disabled="gameFinished" :tabindex="gameFinished || tie ? -1 : 0">
+                  <span v-if="board[i][index] === 'X'" class="fa-solid fa-xmark"></span>
+                  <span v-else-if="board[i][index] === 'O'" class="fa-solid fa-circle"></span>
+              </div>
+          </div>
+      </div>
+      <PlayAgain @empty-board="playAgain" class="btn"></PlayAgain>
+      <EndGame @end-game="handleClick"></EndGame>
     </div>
-    <PlayAgain @empty-board="playAgain" class="btn"></PlayAgain>
-    <EndGame @end-game="handleClick"></EndGame>
-  </div>
-  <div>
-    <ScoreBoard :history="history" :playerX="playerX" :playerO="playerO"></ScoreBoard>
-  </div>
+    <div>
+      <ScoreBoard :history="history" :playerX="playerX" :playerO="playerO"></ScoreBoard>
+    </div>
   </div>
 </template>
 
@@ -178,10 +178,13 @@ h2 {
   width: 100vw;
   min-height: 100vh;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: center;
   align-content: center;
   background-color: lightblue;
+  @media screen and (max-width: 1220px) {
+    flex-direction: column;
+  }
 }
 
 .game-board {
