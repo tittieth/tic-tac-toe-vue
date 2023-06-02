@@ -3,6 +3,7 @@ import { ref, onMounted, Ref } from 'vue';
 import PlayAgain from './PlayAgain.vue';
 import ScoreBoard from './ScoreBoard.vue';
 import EndGame from './EndGame.vue';
+import { IPlayer } from '../models/IPlayer';
 
 const rows: number = 3;
 const columns: number = 3;
@@ -35,35 +36,19 @@ onMounted(() => {
   loadSavedGame();
 });
 
-interface Player {
-  name: string | null;
-  gamePoints: Ref<number>;
-}
-
 const winner = ref<string[]>([]);
 const tie = ref(false);
 const history = ref<string[]>([]);
 
-const playerX: Player = {
+const playerX: IPlayer = {
   name: JSON.parse(localStorage.getItem('userX') || 'null'),
   gamePoints: ref(Number(localStorage.getItem('pointsUserX')) || 0),
 };
 
-const playerO: Player = {
+const playerO: IPlayer = {
   name: JSON.parse(localStorage.getItem('userO') || 'null'),
   gamePoints: ref(Number(localStorage.getItem('pointsUserO')) || 0),
 };
-
-interface ITestProps {
-  players: {
-    playerX: string;
-    playerO: string;
-  }
-}
-
-
-const props = defineProps<ITestProps>();
-console.log(props.players.playerX);
 
 const gameFinished = ref(false);
 const currentPlayer = ref<string | null>();
