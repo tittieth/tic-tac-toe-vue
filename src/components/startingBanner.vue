@@ -56,6 +56,9 @@ span:nth-child(2) {
     margin-left: -120px;
     margin-bottom: -20px;
     margin-top: -70px;
+    @media screen and (max-width: 576px) {
+        margin-top: -40px;
+    }
 }
 
 span:nth-child(3) {
@@ -87,7 +90,7 @@ span:nth-child(4) {
 
 .sign__x{
     margin-left: -320px;
-    margin-top: 30px;
+    margin-top: 20px;
     color: #aaebc8;
     @media screen and (max-width: 576px) {
         margin-left: -250px;

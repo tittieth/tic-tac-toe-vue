@@ -59,11 +59,12 @@ const savePlayersToLs = () => {
 
 span {
   display: block;
-  margin-top: 100px;
-  font-size: 1.5rem;
+  margin-top: 20px;
+  font-size: 1.2rem;
   @media screen and (min-width: 576px) {
-    margin-top: 150px;
+    margin-top: 100px;
     margin-bottom: -150px;
+    font-size: 1.5rem;
   }
 }
 
@@ -78,7 +79,7 @@ form {
   flex-direction: column;
   justify-content: center;
   align-content: center;
-  margin: 50px;
+  margin: 30px 50px;
   @media screen and (min-width: 576px) {
     min-width: 20%;
     margin: auto;
