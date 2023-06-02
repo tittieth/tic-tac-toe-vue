@@ -44,7 +44,7 @@ const handleClick = () => {
 span {
     -webkit-text-stroke-width: 1.25px;
     -webkit-text-stroke-color: #000;
-    font-size: 80px;
+    font-size: 100px;
     text-shadow: 0 0px #C6A664, 0 0px #f2aaaa;
     transform: translate(0, 100%) rotate(4deg);
     animation: jump 2s ease-in-out;
@@ -59,7 +59,7 @@ span {
 span:nth-child(2) {
     margin-left: -120px;
     margin-bottom: -20px;
-    margin-top: -50px;
+    margin-top: -70px;
 }
 
 span:nth-child(3) {
@@ -81,14 +81,22 @@ span:nth-child(4) {
 }
 
 .sign__o{
-    margin-left: 280px;
-    margin-bottom: -20px;
+    margin-left: 350px;
+    margin-bottom: -70px;
+    @media screen and (max-width: 576px) {
+        margin-left: 280px;
+        margin-bottom: -20px; 
+    }
 }
 
 .sign__x{
-    margin-left: -250px;
-    margin-top: 40px;
+    margin-left: -320px;
+    margin-top: 30px;
     color: #aaebc8;
+    @media screen and (max-width: 576px) {
+        margin-left: -250px;
+        margin-top: 40px;
+    }
 }
 
 .wrapper {
