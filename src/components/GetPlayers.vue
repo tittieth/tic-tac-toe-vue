@@ -62,6 +62,10 @@ span {
   display: block;
   margin-top: 100px;
   font-size: 1.5rem;
+  @media screen and (min-width: 576px) {
+    margin-top: 150px;
+    margin-bottom: -150px;
+  }
 }
 
 h3 {
@@ -76,6 +80,10 @@ form {
   justify-content: center;
   align-content: center;
   margin: 50px;
+  @media screen and (min-width: 576px) {
+    min-width: 20%;
+    margin: auto;
+  }
 }
 
 input {
