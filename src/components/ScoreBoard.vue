@@ -1,12 +1,19 @@
 <script setup lang="ts">
 
 const props = defineProps({
-    history: {
-        type: Array
-    }
-})
+  playerX: {
+    type: Object,
+    required: true,
+  },
+  playerO: {
+    type: Object,
+    required: true,
+  },
+  history: {
+    type: Array
+  }
+});
 
-console.log(props.history);
 </script>
 
 <template>
@@ -14,6 +21,8 @@ console.log(props.history);
         <h2>Scoreboard</h2>
         <div v-for="(game, idx) in props.history" :key="idx">
         Game {{ idx + 1 }}: {{ game }} won </div>
+        <div>{{ playerO.name }}: {{ playerO.gamePoints }} </div>
+        <div>{{ playerX.name }}: {{ playerX.gamePoints }} </div>
     </div>
 </template>
 

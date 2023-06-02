@@ -195,9 +195,7 @@ const handleClick = () => {
     <EndGame @end-game="handleClick"></EndGame>
   </div>
   <div>
-    <ScoreBoard :history="history"></ScoreBoard>
-    <div>{{ playerO.name }}: {{ playerO.gamePoints }} </div>
-    <div>{{ playerX.name }}: {{ playerX.gamePoints }} </div>
+    <ScoreBoard :history="history" :playerX="playerX" :playerO="playerO"></ScoreBoard>
   </div>
   </div>
 </template>
