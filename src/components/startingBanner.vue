@@ -114,6 +114,10 @@ button {
     border: 1px solid black;
 }
 
+button:hover {
+    background-color: #aaebc8;
+}
+
 @keyframes jump {
   33% {
     text-shadow: 0 60px #C6A664, 0 150px #f0c2e2;
