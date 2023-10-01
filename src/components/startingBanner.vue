@@ -3,7 +3,6 @@ const emit = defineEmits(["handlePlayBtn"]);
 
 const handleClick = () => {
   emit("handlePlayBtn");
-  console.log("test");
 };
 </script>
 
